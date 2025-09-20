@@ -69,14 +69,35 @@ io.on("connection", function (uniquesocket) {
     }
 
     
-    uniquesocket.on("disconnect", () => {
-        console.log("disconnected")
-        if (uniquesocket.id === players.white) {
-            delete players.white;
-        } else if (uniquesocket.id === players.black) {
-            delete players.black;
-        }
-    });
+   uniquesocket.on("disconnect", () => {
+    console.log("disconnected");
+
+    if (uniquesocket.id === players.white) {
+        delete players.white;
+        io.emit("gameOver", { 
+            result: "disconnect", 
+            winner: "Black", 
+            reason: "White player disconnected" 
+        });
+
+        setTimeout(() => {
+            resetGame();
+            startTimer("w");
+        }, 3000);
+    } else if (uniquesocket.id === players.black) {
+        delete players.black;
+        io.emit("gameOver", { 
+            result: "disconnect", 
+            winner: "White", 
+            reason: "Black player disconnected" 
+        });
+
+        setTimeout(() => {
+            resetGame();
+            startTimer("w");
+        }, 3000);
+    }
+});
 
 
     uniquesocket.on("move", (move) => {
