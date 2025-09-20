@@ -163,6 +163,8 @@ socket.on("gameOver", (data) => {
     } else if (data.result === "timeout") {
         showNotification(`${data.winner} wins on Time!`, "error");
     }
+      else if (data.result === "disconnect") {
+        showNotification(`${data.winner} wins! (${data.reason})`, "error");}
     else if (data.result === "check") {
         showNotification(`Check! ${data.check === "w" ? "White" : "Black"} king is in danger!`, "warning");
     }
